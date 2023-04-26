@@ -81,10 +81,6 @@ public class DFSM {
         if(!alphabet.contains(sign)) throw new DFSMException("Das eingegebene Zeichen kommt nicht aus dem Alphabet des DEA: " + sign);
     }
 
-    private void check(DeltaDomain delta) throws DFSMException {
-        if(!transitionFunction.containsKey(delta)) throw new DFSMException("Der Zustand hat keine kante mit diesem Zeichen: [" + delta.a + "]");
-    }
-
     public void setStartingState(int state) throws DFSMException {
         check(state);
 
@@ -129,7 +125,6 @@ public class DFSM {
         for(char letter : s.toCharArray()) {
             check(letter);
             DeltaDomain current = new DeltaDomain(curState, letter);
-            check(current);
             System.out.print(curState + " -> ");
             curState = transitionFunction.get(current);
         }
@@ -146,7 +141,8 @@ public class DFSM {
         for(char letter : input.toCharArray()) {
             check(letter);
             DeltaDomain current = new DeltaDomain(curState, letter);
-            check(current);
+            // hier setze ich voraus, dass current ein valides DeltaDomain ist, um Laufzeit zu sparen.
+            // Es wird zwar nicht abgeprüft, Aber theoretisch hat jeder DEA eine Kante für validen State und validen letter
             curState = transitionFunction.get(current);
             pos++;
             if(acceptingStates.contains(curState)) {

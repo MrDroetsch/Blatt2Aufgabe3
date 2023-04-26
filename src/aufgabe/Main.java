@@ -56,7 +56,7 @@ public class Main {
             Für das Pattern wort '001001' (Länge 6)
             Es müsste eine Verbesserung von (in diesem Beispiel) ca. Faktor 6 sein.
             Die Komplexität vom bfSearch braucht also in etwa 6*n iterationen (durch die 2 verschachtelten Schleifen)
-            Die Komplexität vom deaSearch ist bloß n.
+            Die Komplexität vom deaSearch schätze ich auf lineare komplexität n mit Faktor 2 (da geschaut werden muss ob das Zeichen im Alphabet ist)
             Zumindest wäre das meine Vermutung.
              */
 
@@ -66,26 +66,8 @@ public class Main {
             bfSearch(wort, "001001");
             System.out.println(System.currentTimeMillis() - cur);
             /*
-             1.000
-             0
-             0
-             0
-             0
-             0
+            1.000
 
-             1.000.000
-             11
-             12
-             11
-             13
-             13
-
-             1.000.000.000
-             11.122
-             11.857
-             11.546
-             12.210
-             12.533
              */
 
             System.out.println("deaSearch:");
@@ -93,31 +75,16 @@ public class Main {
             dea_search_001001(wort);
             System.out.println(System.currentTimeMillis() - cur);
             /*
-             1.000
-             2
-             1
-             2
-             1
-             1
+            1.000
 
-             1.000.000
-             27
-             28
-             23
-             32
-             25
-
-             1.000.000.000
-             12.958
-             12.949
-             13.006
-             13.355
-             13.978
              */
 
             // Das Ergebnis überrascht mich, da es scheint als wäre die Brute-Force-Methode um
-            // den Faktor 2 schneller bei einer Zeichenkette mit 1.000.000 Einträgen
+            // den Faktor 2-3 schneller bei einer Zeichenkette mit 1.000.000 Einträgen
             // Bei Größeren Wortlängen scheint die Laufzeit relativistisch gesehen ähnlicher zu sein. (1.000.000.000 Einträge)
+
+            // Nachdem ich dann weiter nachgedacht habe ist mir aufgefallen, dass beim dea genauso 6*n vorliegt. Dadurch, dass immer geschaut werden
+            //
         } catch(DFSM.DFSMException e) {
             System.err.println(e.getMessage());
         }
@@ -139,14 +106,17 @@ public class Main {
     public static int bfSearch(String text, String pattern) {
         int textLen = text.length();
         int patternLen = pattern.length();
-        if(textLen < patternLen) return 0;
 
+        char[] cText = text.toCharArray();
+        char[] cPattern = pattern.toCharArray();
+
+        if(textLen < patternLen) return 0;
 
         int count = 0;
         for(int i = 0; i < textLen - (patternLen - 1); i++) {
             boolean hit = true;
             for(int j = 0; j < patternLen; j++) {
-                if(text.charAt(i+j) != pattern.charAt(j)) hit = false;
+                if(cText[i+j] != cPattern[j]) hit = false;
             }
             if(hit) count++;
         }
