@@ -10,7 +10,7 @@ public class Main {
             char[] bool = new char[]{'0', '1'};
             DFSM dea = new DFSM(2, bool);
 
-            // Alle geraden Zahlen
+            // Alle geraden Zahlen (mit 0 gerade, das leere Wort nicht)
             dea.setStartingState(0);
             dea.setAccepting(1);
             dea.addTransition(0, '0', 1);
@@ -46,45 +46,22 @@ public class Main {
             System.out.println("\n\nbfSearch(\"ababa\",\"aba\") = " + bfSearch("ababa", "aba"));
 
             // Aufgabe e
-            String wort = genString(1_000_000_000, bool);
-            //System.out.println("Wort: " + wort);
-            //System.out.println("bfSearch: " + bfSearch(wort, "001001"));
-            //System.out.println("deaSearch: " + dea_search_001001(wort));
+            String wort = genString(1_000_000, bool);
+            System.out.println("Wort: " + wort);
+            System.out.println("bfSearch: " + bfSearch(wort, "001001"));
+            System.out.println("deaSearch: " + dea_search_001001(wort));
 
-            // aufgabe f
-            /*
-            Für das Pattern wort '001001' (Länge 6)
-            Es müsste eine Verbesserung von (in diesem Beispiel) ca. Faktor 6 sein.
-            Die Komplexität vom bfSearch braucht also in etwa 6*n iterationen (durch die 2 verschachtelten Schleifen)
-            Die Komplexität vom deaSearch schätze ich auf lineare komplexität n mit Faktor 2 (da geschaut werden muss ob das Zeichen im Alphabet ist)
-            Zumindest wäre das meine Vermutung.
-             */
-
-            // Aufgabe g
+            // Aufgabe f + g in pdf!
             System.out.println("\n\nbfSearch:");
             long cur = System.currentTimeMillis();
             bfSearch(wort, "001001");
             System.out.println(System.currentTimeMillis() - cur);
-            /*
-            1.000
-
-             */
 
             System.out.println("deaSearch:");
             cur = System.currentTimeMillis();
             dea_search_001001(wort);
             System.out.println(System.currentTimeMillis() - cur);
-            /*
-            1.000
 
-             */
-
-            // Das Ergebnis überrascht mich, da es scheint als wäre die Brute-Force-Methode um
-            // den Faktor 2-3 schneller bei einer Zeichenkette mit 1.000.000 Einträgen
-            // Bei Größeren Wortlängen scheint die Laufzeit relativistisch gesehen ähnlicher zu sein. (1.000.000.000 Einträge)
-
-            // Nachdem ich dann weiter nachgedacht habe ist mir aufgefallen, dass beim dea genauso 6*n vorliegt. Dadurch, dass immer geschaut werden
-            //
         } catch(DFSM.DFSMException e) {
             System.err.println(e.getMessage());
         }
